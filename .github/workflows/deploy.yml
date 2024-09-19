@@ -1,0 +1,24 @@
+name: Deploy
+
+on:  
+  push:    
+    branches:
+      - CI/CD03-09
+
+
+jobs:  
+  deploy:    
+    runs-on: ubuntu-latest    
+    
+    steps:      
+      - name: Checkout code        
+        uses: actions/checkout@v3      
+        
+      - name: Set up SSH key        
+        uses: webfactory/ssh-agent@v0.7.0       
+        with:          
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}      
+          
+      - name: Deploy to server        
+        run: |          
+          ssh -o StrictHostKeyChecking=no ubuntu@useronboard.jellyspace.io 'bash /home/ubuntu/jellyspace.io/deploy.sh'

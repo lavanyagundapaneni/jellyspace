@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://useronboard.jellyspace.io",
+    "secure": true,
+    "changeOrigin": true
+  }
+}
