@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
       status: {
           type: DataTypes.INTEGER,
           allowNull: false,
-          defaultValue: 0, // Default status can be "inactive" or similar
+          defaultValue: 1, // Default status can be "inactive" or similar
           validate: {
               isIn: [[0, 1,]] // For example, 0 could mean inactive, 1 could mean active
           }
