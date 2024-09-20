@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://useronboard.jellyspace.io",
+    "target": "http://localhost:8080",
     "secure": true,
     "changeOrigin": true
   }

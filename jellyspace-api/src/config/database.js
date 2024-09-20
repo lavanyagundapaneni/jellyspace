@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize , DataTypes } = require('sequelize');
 require('dotenv').config(); // Load environment variables from .env file
 
 // Create a new Sequelize instance using the DATABASE_URL from .env
@@ -21,6 +21,7 @@ sequelize.authenticate()
         console.log('Search path:', sequelize.query('SHOW data_directory;')) // Log the active schema
     })
     .catch(err => console.log('Error: ' + err));
+ 
 
 // Sync models with the database
 const syncDatabase = async () => {
@@ -35,5 +36,6 @@ const syncDatabase = async () => {
 // Export the sequelize instance and sync function
 module.exports = {
     sequelize,
+    DataTypes,
     syncDatabase
 };

@@ -6,25 +6,28 @@ const User = require("../models/user");
 router.post("/register", async (req, res) => {
   try {
     const existingUser = await User.findAll({ where: { email: req.body.email } });
-    if (existingUser) {
+
+    // Check if user already exists
+    if (existingUser.length > 0) {
       return res.json({
         status: false,
         message: 'User already registered',
         data: ''
       });
     }
-    
-    const newUser = await 'User'.create({
+
+    // Create new user
+    const newUser = await User.create({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      password: req.body.password,
+      password: req.body.password, // Make sure this is hashed before saving
       accountType: req.body.accountType,
       entityName: req.body.entityName,
       dateOfInCorporation: req.body.dateOfInCorporation,
       title: req.body.title,
       mobileNo: req.body.mobileNo,
-      skills: req.body.skills,
+      skills: req.body.skills,  // Make sure the model accepts an array
       image: req.body.image,
       street: req.body.street,
       h_number: req.body.h_number,
@@ -51,7 +54,8 @@ router.post("/register", async (req, res) => {
 // User Login
 router.post("/login", async (req, res) => {
   try {
-    const user = await User.findAll({ 
+    // Find user by email and password (consider using hashed passwords)
+    const user = await User.findOne({ 
       where: { email: req.body.email, password: req.body.password } 
     });
 
@@ -88,6 +92,7 @@ router.get("/users", async (req, res) => {
       data: users
     });
   } catch (error) {
+    console.error(error);
     return res.json({
       status: false,
       message: 'Failed to fetch users',
@@ -99,7 +104,8 @@ router.get("/users", async (req, res) => {
 // Delete User
 router.post("/deleteUser", async (req, res) => {
   try {
-    const user = await User.findAll({ where: { email: req.body.email } });
+    const user = await User.findOne({ where: { email: req.body.email } });
+
     if (user) {
       await User.destroy({ where: { id: user.id } });
       return res.json({
@@ -115,6 +121,7 @@ router.post("/deleteUser", async (req, res) => {
       });
     }
   } catch (error) {
+    console.error(error);
     return res.json({
       status: false,
       message: 'Failed to delete user',

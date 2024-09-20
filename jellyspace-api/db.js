@@ -3,9 +3,9 @@ const {Client} =require('pg')
 const client=new Client({
     host:'localhost',
     port:5432,
-    database:'jelly-space',
+    database:'registration',
     user:'postgres',
-    password:'Gundapaneni@29',
+    password:'sivasai',
 })
 
 client.connect((err)=>{
