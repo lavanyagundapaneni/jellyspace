@@ -13,7 +13,7 @@ export const environment: Environment = {
   // frontendUrl: 'http://35.166.32.174:4200', // Frontend base URL for development
   // backendUrl: 'http://35.166.32.174:3000', // Backend base URL for development
   // domainUrl: '', // Not used in development
-  frontendUrl: 'http://localhost:8080',
-  backendUrl: 'http://localhost:8080/api',
-  domainUrl: 'http://localhost:8080',
+  frontendUrl: 'http://34.221.241.177:8080',
+  backendUrl: 'http://34.221.241.177:8080/api',
+  domainUrl: 'http://34.221.241.177:8080',
 };

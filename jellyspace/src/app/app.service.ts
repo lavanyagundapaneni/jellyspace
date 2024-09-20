@@ -18,7 +18,7 @@ import { retry, catchError } from 'rxjs/operators';
 export class AppService {
  // apiURL = 'http://35.166.32.174:8080/api';
 
-  apiURL = 'http://localhost:8080/api';
+  apiURL = 'http://34.221.241.177:8080/api';
 
   constructor(private http: HttpClient) {}
   httpOptions = {
