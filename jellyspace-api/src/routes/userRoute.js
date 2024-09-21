@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const { sequelize } = require('../config/database'); // Adjust path as needed
 
 // User Registration
 router.post("/register", async (req, res) => {
+  const transaction = await sequelize.transaction(); // Start a transaction
+
   try {
-    const existingUser = await User.findAll({ where: { email: req.body.email } });
+    const existingUser = await User.findAll({ where: { email: req.body.email }, transaction });
 
     // Check if user already exists
     if (existingUser.length > 0) {
@@ -34,7 +37,9 @@ router.post("/register", async (req, res) => {
       city: req.body.city,
       postalCode: req.body.postalCode,
       country: req.body.country
-    });
+    }, { transaction }); // Include transaction
+
+    await transaction.commit(); // Commit the transaction
 
     return res.json({
       status: true,
@@ -43,6 +48,9 @@ router.post("/register", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    
+    await transaction.rollback(); // Rollback the transaction on error
+
     return res.json({
       status: false,
       message: 'Registration failed',
@@ -103,11 +111,15 @@ router.get("/users", async (req, res) => {
 
 // Delete User
 router.post("/deleteUser", async (req, res) => {
+  const transaction = await sequelize.transaction(); // Start a transaction
+
   try {
-    const user = await User.findOne({ where: { email: req.body.email } });
+    const user = await User.findOne({ where: { email: req.body.email }, transaction }); // Include transaction
 
     if (user) {
-      await User.destroy({ where: { id: user.id } });
+      await User.destroy({ where: { id: user.id }, transaction }); // Include transaction in delete operation
+      await transaction.commit(); // Commit the transaction
+
       return res.json({
         status: true,
         message: 'User deleted successfully',
@@ -122,6 +134,9 @@ router.post("/deleteUser", async (req, res) => {
     }
   } catch (error) {
     console.error(error);
+    
+    await transaction.rollback(); // Rollback the transaction on error
+
     return res.json({
       status: false,
       message: 'Failed to delete user',

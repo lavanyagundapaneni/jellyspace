@@ -1,9 +1,9 @@
-// src/routes/bidRoute.js
 const express = require('express');
 const router = express.Router();
 const Bid = require('../models/bid'); // Import Bid model
 const User = require('../models/user'); // Import User model
 const { emailSending } = require('../common/common');
+const sequelize = require('../config/database'); // Import your sequelize instance
 
 // Get bids by user email
 router.post('/getbids', async (req, res) => {
@@ -108,22 +108,34 @@ router.post('/acceptBid', async (req, res) => {
   }
 });
 
-// Post a new bid
+// Post a new bid with transaction handling
 router.post('/postBid', async (req, res) => {
-  try {
-    const user = await User.findOne({ where: { email: req.body.userEmail } });
-    const projectUser = await User.findOne({ where: { email: req.body.projectEmail } });
+  const transaction = await sequelize.transaction(); // Start a transaction
 
-    const newBid = await Bid.create({
-      projectId: req.body.projectId,
-      projectName: req.body.projectName,
-      projectEmail: req.body.projectEmail,
-      bidAmount: req.body.bidAmount,
-      status: req.body.status,
-      rupeesId: req.body.rupeesId,
-      bidDescription: req.body.bidDescription,
-      userEmail: req.body.userEmail,
-    });
+  try {
+    const user = await User.findOne({ where: { email: req.body.userEmail }, transaction }); // Include transaction
+    const projectUser = await User.findOne({ where: { email: req.body.projectEmail }, transaction }); // Include transaction
+
+    if (!user || !projectUser) {
+      throw new Error('User or Project User not found');
+    }
+
+    const newBid = await Bid.create(
+      {
+        projectId: req.body.projectId,
+        projectName: req.body.projectName,
+        projectEmail: req.body.projectEmail,
+        bidAmount: req.body.bidAmount,
+        status: req.body.status,
+        rupeesId: req.body.rupeesId,
+        bidDescription: req.body.bidDescription,
+        userEmail: req.body.userEmail,
+      },
+      { transaction } // Pass the transaction object here
+    );
+
+    // Commit the transaction after successful creation
+    await transaction.commit();
 
     const htmlBodyPostedBid = '<!DOCTYPE html> ...'; // Use your existing HTML templates
     const htmlBodyForProjectedBid = '<!DOCTYPE html> ...';
@@ -137,11 +149,14 @@ router.post('/postBid', async (req, res) => {
       data: newBid
     });
   } catch (error) {
+    await transaction.rollback(); // Rollback the transaction on error
+
     console.error('Error:', error);
     return res.json({
       status: false,
       message: 'Project bidding failed',
-      data: []
+      errorMessage : error.message || "An error occurred",
+      data : []
     });
   }
 });
