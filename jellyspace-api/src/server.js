@@ -17,8 +17,8 @@ dotenv.config();
 const port = process.env.PORT || 8080;
 
 const corsOptions = {
-  origin: "http://localhost:4200",
-  credentials: false, 
+  origin: "http://35.90.18.252:4200",
+  credentials: true, 
   optionSuccessStatus: 200,
 };
 
