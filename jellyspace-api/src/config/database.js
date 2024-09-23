@@ -26,7 +26,7 @@ sequelize.authenticate()
 // Sync models with the database
 const syncDatabase = async () => {
     try {
-        await sequelize.sync({ force: true }); // 'force: false' avoids dropping existing tables
+        await sequelize.sync({ force: false }); // 'force: false' avoids dropping existing tables
         console.log('Database & tables synced successfully.');
     } catch (err) {
         console.error('Error syncing database:', err);
