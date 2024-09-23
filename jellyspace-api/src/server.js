@@ -18,7 +18,7 @@ const port = process.env.PORT || 8080;
 
 const corsOptions = {
   origin: "http://localhost:4200",
-  credentials: true, 
+  credentials: false, 
   optionSuccessStatus: 200,
 };
 
