@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://54.186.68.221:8080",
+    "target": "https://test.jellyspace.io",
     "secure": true,
     "changeOrigin": true
   }
