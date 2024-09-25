@@ -1,7 +1,7 @@
 const {Client} =require('pg')
 
 const client=new Client({
-    host:'localhost',
+    host:'54.186.68.221',
     port:5432,
     database:'registration',
     user:'postgres',

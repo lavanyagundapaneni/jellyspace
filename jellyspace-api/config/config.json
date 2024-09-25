@@ -3,21 +3,21 @@
       "username": "postgres",
       "password": "Gundapaneni@29",
       "database": "jelly-space",
-      "host": "localhost",
+      "host": "54.186.68.221",
       "dialect": "postgres"
     },
     "test": {
       "username": "postgres",
       "password": "Gundapaneni@29",
       "database": "jelly-space",
-      "host": "localhost",
+      "host": "54.186.68.221",
       "dialect": "postgres"
     },
     "production": {
       "username": "postgres",
       "password": "Gundapaneni@29",
       "database": "jelly-space",
-      "host": "localhost",
+      "host": "54.186.68.221",
       "dialect": "postgres"
     }
   }
